@@ -17,7 +17,7 @@ class UserLogin(BaseModel):
         if not re.search(r'[a-z]', value):
             raise ValueError('Password must contain at least one lowercase letter')
 
-        if not re.search(r'[\W_]', value):  # \W matches any non-word character
+        if not re.search(r'[\W_]', value): 
             raise ValueError('Password must contain at least one special character')
 
         if re.search(r'(012|123|234|345|456|567|678|789|890)', value):

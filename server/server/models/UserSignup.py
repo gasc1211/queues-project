@@ -2,9 +2,9 @@ import re
 
 from typing import Optional 
 from pydantic import BaseModel, field_validator
-from utils.globalf import validate_sql_injection
+from server.utils.globalf import validate_sql_injection
 
-class UserLogin(BaseModel):
+class UserSignup(BaseModel):
   
   first_name: str
   last_name: str
