@@ -1,11 +1,21 @@
-from typing import Union
+import os
+import uvicorn
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 
-from models.UserSignup import UserSignup
-from models.UserLogin import UserLogin
-from controllers.firebase import register_user_firebase, login_user_firebase
+from .models.UserLogin import UserLogin
+from .models.UserSignup import UserSignup
+from .controllers.firebase import register_user_firebase, login_user_firebase
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():
@@ -26,3 +36,11 @@ async def login(user: UserLogin):
 async def getUser(req: Request, res: Response):
   """ Get user data"""
   pass
+
+if __name__=="__main__":
+  __host__ = os.getenv("HOST")
+  __port__ = int(os.getenv("PORT"))
+
+  def dev():
+    """ Launched with 'poetry run dev' at root level """
+    uvicorn.run("server.main:app", host=__host__, port=__port__, reload=True)
