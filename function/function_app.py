@@ -12,8 +12,8 @@ load_dotenv()
 # SendGrid environment variables
 sender = os.getenv("EMAIL_SENDER")
 api_url = os.getenv("API_DOMAIN")
-sendgrid_secret = os.getenv("SG_KEY")
-secret_key_func = os.getenv("SECRET_KEY_FUNC")
+sendgrid_secret = os.getenv("SENDGRID_SECRET_KEY")
+functionapp_secret_key = os.getenv("FUNCTIONAPP_SECRET_KEY")
 
 app = func.FunctionApp()
 
@@ -27,7 +27,7 @@ def QueueTriggerFunctionActivateAccount(azqueue: func.QueueMessage):
     # Request authorization code from api
     response = requests.post(
         f"{api_url}/user/{body}/auth_code",
-        headers={"Authorization": secret_key_func}
+        headers={"Authorization": functionapp_secret_key}
     )
     
     response.raise_for_status()                     # Check response status
