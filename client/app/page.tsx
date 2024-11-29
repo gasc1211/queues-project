@@ -8,7 +8,7 @@ export default function Home() {
       <div>
         <h1>Welcome to <strong>Queue's Project</strong></h1>
         <Button variant={"secondary"} className="font-bold text-lg mt-4">
-          <Link href="/auth/login">Ingresar</Link>
+          <Link href="/auth/signin">Ingresar</Link>
         </Button>
       </div>
     </main>
