@@ -16,6 +16,7 @@ from azure.storage.queue import QueueClient, BinaryBase64DecodePolicy, BinaryBas
 from server.models.UserSignup import UserSignup
 from server.models.UserLogin import UserLogin
 from server.models.EmailActivation import EmailActivation
+from server.models.UserActivation import UserActivation
 
 from server.utils.database import fetch_query_as_json
 from server.utils.tokens import create_jwt_token
@@ -128,7 +129,7 @@ async def login_user_firebase(user: UserLogin):
 async def generate_activation_code(email: EmailActivation):
 
     code = random.randint(100000, 999999)
-    query = f"exec [acc].[GenerateActivationCode] @email = '{email.email}', @verification_code = {code}"
+    query = f"EXEC [acc].[GenerateActivationCode] @email = '{email.email}', @verification_code = {code}"
     
     try:
         result_json = await fetch_query_as_json(query, is_procedure=True)
@@ -142,5 +143,22 @@ async def generate_activation_code(email: EmailActivation):
         "auth_code": code
     }
     
-async def activate_user(email: EmailActivation, auth_code: int):
+async def activate_user(user: UserActivation):
+
+    query = f" SELECT verification_code FROM acc.users WHERE email='{user.email}'"
+    
+    try: 
+        results_json = await fetch_query_as_json(query)
+        results = json.loads(results_json)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    if results[0]["verification_code"] == user.auth_code:
+        try: 
+            procedure_query = f"EXEC acc.ActivateAccount @email='{user.email}'"
+            results_json = await fetch_query_as_json(query)
+            results = json.loads(results_json)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+    
     pass

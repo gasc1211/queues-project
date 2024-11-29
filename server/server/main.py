@@ -4,11 +4,12 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from server.models.EmailActivation import EmailActivation
+from server.models.UserActivation import UserActivation
 from server.utils.tokens import validate, validate_func
 
 from .models.UserLogin import UserLogin
 from .models.UserSignup import UserSignup
-from .controllers.firebase import generate_activation_code, register_user_firebase, login_user_firebase
+from .controllers.firebase import activate_user, generate_activation_code, register_user_firebase, login_user_firebase
 
 app = FastAPI()
 
@@ -55,8 +56,9 @@ async def generate_code(request: Request, email: str):
 
 @app.put("/user/verification")
 async def verify_auth_code(request, email: str, auth_code: int):
-    e = EmailActivation(email=email)
-    return verify_auth_code(email=e, auth_code=auth_code)
+    """ Verify auth code sent to user through email"""
+    user = UserActivation(email=email, auth_code=auth_code)
+    return activate_user(user)
 
 if __name__=="__main__":
     __host__ = os.getenv("HOST")
