@@ -1,25 +1,33 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { FormDescription, FormLabel } from "@/components/ui/form";
+
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
-export default function VerifyAccount() {
+import { useEffect, useState } from "react";
 
-  const [value, setValue] = useState("")
+export default function VerifyAccount({ params }: { params: Promise<{ email: string }> }) {
+
+  const [value, setValue] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      setEmail((await params).email.replace("%40", "@"));
+    }
+    fetchEmail();
+  }, [params]);
 
   return (
     <main className="h-dvh flex items-center justify-around">
-      <Card className="p-8">
+      <Card className="p-8 w-2/5">
         <form className="[&>*]:mt-4 flex flex-col align-middle">
           <h2 className="text-center font-bold">Verification Code</h2>
-          <p className="text-sm font-light">Enter the verification code sent to your email address</p>
+          <p className="text-sm font-light text-center">Enter the verification code sent to your email address: <strong>{email}</strong></p>
           <div className="mb-4 flex align-middle justify-center">
             <InputOTP
               maxLength={6}
