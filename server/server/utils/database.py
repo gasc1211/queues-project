@@ -47,7 +47,7 @@ async def fetch_query_as_json(query, is_procedure=False):
 
         if is_procedure:
             conn.commit()
-
+            
         return json.dumps(results)
 
     except pyodbc.Error as e:
