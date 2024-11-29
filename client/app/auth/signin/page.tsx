@@ -13,13 +13,14 @@ import {
 } from "@/components/ui/form";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const UserLoginSchema = z.object({
   email: z.string(),
   password: z.string()
 })
 
-export default function Login() {
+export default function Signin() {
 
   const form = useForm<z.infer<typeof UserLoginSchema>>({
     resolver: zodResolver(UserLoginSchema),
@@ -50,8 +51,13 @@ export default function Login() {
             </FormItem>
           )}
           />
-          <Button type="submit">Login</Button>
+          <Button type="submit">Sign in</Button>
         </Form>
+        <p className="text-sm text-center">Don't have an account yet?
+          <Button variant="outline" className="ml-2">
+            <Link href="/auth/signup">Sign up</Link>
+          </Button>
+        </p>
       </Card>
     </main>
   );
