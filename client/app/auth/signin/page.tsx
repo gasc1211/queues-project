@@ -51,7 +51,9 @@ export default function Signin() {
             </FormItem>
           )}
           />
-          <Button type="submit">Sign in</Button>
+          <div className="flex flex-col align-middle">
+            <Button type="submit">Sign In</Button>
+          </div>
         </Form>
         <p className="text-sm text-center">Don't have an account yet?
           <Button variant="outline" className="ml-2">

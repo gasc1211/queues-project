@@ -71,7 +71,9 @@ export default function Signup() {
             </FormItem>
           )}
           />
-          <Button type="submit">Sign up</Button>
+          <div className="flex flex-col align-middle">
+            <Button type="submit">Sign Up</Button>
+          </div>
         </Form>
         <p className="text-sm text-center">Already have an account?
           <Button variant="outline" className="ml-2">
